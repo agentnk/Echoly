@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Echoly</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="island">
+      <header class="toolbar">
+        <div class="brand">
+          <strong>Echoly</strong>
+          <span>notch teleprompter</span>
+        </div>
+        <div class="actions">
+          <button id="openFileBtn" type="button">Open file</button>
+          <button id="playPauseBtn" type="button">Play</button>
+          <button id="pinBtn" type="button" aria-pressed="true">Pinned</button>
+          <button id="minBtn" type="button">Minimize</button>
+        </div>
+      </header>
+
+      <section class="controls">
+        <label>
+          Speed
+          <input id="speedInput" type="range" min="10" max="240" value="55" />
+        </label>
+        <label>
+          Font size
+          <input id="fontInput" type="range" min="22" max="72" value="36" />
+        </label>
+      </section>
+
+      <section class="promptArea" id="promptArea">
+        <p id="scriptText">Load a .txt or .docx speech file to begin.</p>
+      </section>
+      <p id="status" class="status">Ready</p>
+    </main>
+
+    <script src="renderer.js"></script>
+  </body>
+</html>
