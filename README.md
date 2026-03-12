@@ -31,6 +31,15 @@ flutter run -d windows
 flutter run -d macos
 ```
 
-## Notes
+## Testing
+
+```bash
+cd flutter_app
+flutter test
+flutter analyze
+```
+
+## Known limitations
 
 - Screen-capture protection for Flutter desktop may require platform-specific native code.
+- Some malformed `.docx` files may fail parsing and show a user-facing error message.

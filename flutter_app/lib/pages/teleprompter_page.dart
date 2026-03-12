@@ -20,13 +20,23 @@ class _TeleprompterPageState extends State<TeleprompterPage> {
   final _loader = ScriptLoader();
 
   Future<void> _openFile() async {
-    final document = await _loader.pickAndLoad();
-    if (document == null) {
+    final result = await _loader.pickAndLoad();
+    if (!mounted) {
+      return;
+    }
+
+    if (result.isCancelled) {
+      return;
+    }
+
+    if (result.isFailure) {
+      final error = result.errorMessage ?? 'Unknown error while opening file.';
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(error)));
       return;
     }
 
     setState(() {
-      _controller.setDocument(document);
+      _controller.setDocument(result.document!);
     });
   }
 

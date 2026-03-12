@@ -10,13 +10,15 @@ Future<void> main() async {
 
   if (Platform.isWindows || Platform.isMacOS || Platform.isLinux) {
     await windowManager.ensureInitialized();
-    const options = WindowOptions(
-      size: Size(1400, 860),
-      minimumSize: Size(980, 620),
+    final titleBarStyle = Platform.isMacOS ? TitleBarStyle.hidden : TitleBarStyle.normal;
+
+    final options = WindowOptions(
+      size: const Size(1400, 860),
+      minimumSize: const Size(980, 620),
       center: true,
       title: 'Echoly (Flutter)',
-      backgroundColor: Color(0xFFD9D9D9),
-      titleBarStyle: TitleBarStyle.hidden,
+      backgroundColor: const Color(0xFFD9D9D9),
+      titleBarStyle: titleBarStyle,
     );
 
     await windowManager.waitUntilReadyToShow(options, () async {

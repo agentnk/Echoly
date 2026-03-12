@@ -1,8 +1,10 @@
+import 'dart:collection';
+
 class ScriptDocument {
-  const ScriptDocument({
+  ScriptDocument({
     required this.fileName,
-    required this.lines,
-  });
+    required List<String> lines,
+  }) : lines = UnmodifiableListView(lines);
 
   final String fileName;
   final List<String> lines;
