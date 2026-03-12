@@ -40,7 +40,12 @@ function updateFontSize() {
 
 function updateStatus() {
   status.classList.toggle('playing', isPlaying);
-  status.innerHTML = `<span class="indicator"></span> ${isPlaying ? 'PLAYING' : 'PAUSED'}`;
+  status.textContent = isPlaying ? 'PLAYING' : 'PAUSED';
+}
+
+function setErrorStatus(message) {
+  status.classList.remove('playing');
+  status.textContent = `ERROR: ${String(message || 'Unknown error').toUpperCase()}`;
 }
 
 function updateProgress() {
@@ -100,7 +105,7 @@ openFileBtn.addEventListener('click', async () => {
   }
 
   if (result.error) {
-    status.innerHTML = `<span class="indicator"></span> ERROR: ${result.error.toUpperCase()}`;
+    setErrorStatus(result.error);
     return;
   }
 
