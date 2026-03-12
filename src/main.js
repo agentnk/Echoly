@@ -5,26 +5,27 @@ const mammoth = require('mammoth');
 
 let mainWindow;
 
-function getOverlayBounds() {
+function getWindowBounds() {
   const primaryDisplay = screen.getPrimaryDisplay();
-  const { width } = primaryDisplay.workAreaSize;
-  const overlayWidth = Math.min(900, Math.floor(width * 0.65));
-  const overlayHeight = 220;
-  const x = Math.floor((width - overlayWidth) / 2);
-  const y = 8;
+  const { width, height } = primaryDisplay.workAreaSize;
+  const windowWidth = Math.min(1460, Math.floor(width * 0.9));
+  const windowHeight = Math.min(900, Math.floor(height * 0.9));
+  const x = Math.floor((width - windowWidth) / 2);
+  const y = Math.floor((height - windowHeight) / 2);
 
-  return { x, y, width: overlayWidth, height: overlayHeight };
+  return { x, y, width: windowWidth, height: windowHeight };
 }
 
 function createWindow() {
   mainWindow = new BrowserWindow({
-    ...getOverlayBounds(),
-    frame: false,
-    transparent: true,
+    ...getWindowBounds(),
+    backgroundColor: '#d9d9d9',
+    title: 'Echoly',
+    trafficLightPosition: { x: 20, y: 20 },
+    titleBarStyle: process.platform === 'darwin' ? 'hiddenInset' : 'default',
     alwaysOnTop: true,
     resizable: true,
     movable: true,
-    skipTaskbar: false,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
@@ -33,8 +34,6 @@ function createWindow() {
   });
 
   mainWindow.setAlwaysOnTop(true, 'screen-saver');
-  // Prevent the teleprompter content from appearing in screen captures
-  // (e.g., Zoom, Microsoft Teams, Google Meet share streams where supported).
   mainWindow.setContentProtection(true);
   mainWindow.loadFile(path.join(__dirname, 'index.html'));
 }

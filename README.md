@@ -1,19 +1,18 @@
 # Echoly
 
-Echoly is a **desktop teleprompter** app with a notch / Dynamic-Island-inspired floating overlay.
+Echoly is a minimalist desktop teleprompter for presentations and speeches.
 
-It is built with Electron and works on **Windows** (also macOS/Linux).
+Built with Electron and designed to run on **Windows** and **macOS** (also works on Linux).
 
 ## Features
 
-- Open and parse speech files:
-  - `.txt`
-  - `.docx` (Word)
-- Floating, frameless overlay window for easy reading while presenting.
-- Play / pause scrolling teleprompter text.
-- Adjustable scroll speed and font size.
-- Pin/unpin always-on-top behavior.
-- Privacy mode enabled by default: window content protection keeps Echoly hidden from most screen sharing/capture tools (Zoom, Teams, Meet) when supported by the OS.
+- Minimal reading-first teleprompter UI inspired by the provided clean mockup.
+- Manual pacing mode: press **Enter** to advance one line at a time.
+- Play/pause state, progress bar, and line counter.
+- Open `.txt` and `.docx` script files.
+- Adjustable font size.
+- Always-on-top toggle.
+- Content protection enabled (`setContentProtection(true)`) to keep the window hidden from many screen-capture/sharing workflows where the OS supports it.
 
 ## Quick start
 
@@ -22,14 +21,23 @@ npm install
 npm start
 ```
 
-## Build notes for Windows
+## Controls
 
-The app is already Windows-compatible because it uses Electron APIs available on Windows.
-If you want an installer/exe, add `electron-builder` later and package for `win`.
+- **Open**: choose a `.txt` or `.docx` file.
+- **Play/Pause**: toggle reading mode.
+- **Enter**: advance to next line (while playing).
+- **A- / A+**: decrease/increase font size.
+- **Pin**: toggle always-on-top.
+- **_**: minimize.
 
-## Suggested next improvements
+## Platform notes
 
-- Add `.doc` support via a conversion pipeline.
-- Add mirror mode for camera recording setups.
-- Save last-used speed/font preferences.
-- Add export/import for script sessions.
+- **Windows**: supported.
+- **macOS**: supported, including hidden-inset title bar style.
+- **Screen-sharing invisibility** depends on OS/window manager and the capture API used by Zoom/Teams/Meet/OBS.
+
+## Development checks
+
+```bash
+npm run check
+```

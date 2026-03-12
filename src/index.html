@@ -8,35 +8,47 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <main class="island">
-      <header class="toolbar">
-        <div class="brand">
-          <strong>Echoly</strong>
-          <span>notch teleprompter</span>
+    <main class="appShell">
+      <header class="topBar">
+        <div class="windowDots" aria-hidden="true">
+          <span class="dot close"></span>
+          <span class="dot minimize"></span>
+          <span class="dot maximize"></span>
         </div>
-        <div class="actions">
-          <button id="openFileBtn" type="button">Open file</button>
-          <button id="playPauseBtn" type="button">Play</button>
-          <button id="pinBtn" type="button" aria-pressed="true">Pinned</button>
-          <button id="minBtn" type="button">Minimize</button>
-        </div>
+        <h1>ECHOLY</h1>
+        <div class="placeholder"></div>
       </header>
 
-      <section class="controls">
-        <label>
-          Speed
-          <input id="speedInput" type="range" min="10" max="240" value="55" />
-        </label>
-        <label>
-          Font size
-          <input id="fontInput" type="range" min="22" max="72" value="36" />
-        </label>
+      <section class="controlBar">
+        <div class="leftControls">
+          <button id="openFileBtn" type="button" title="Open script">⌂</button>
+          <button id="playPauseBtn" type="button" title="Toggle play">❚❚</button>
+          <button id="fontDownBtn" type="button" title="Decrease font">A-</button>
+          <span id="fontSizeLabel" class="fontSize">26pt</span>
+          <button id="fontUpBtn" type="button" title="Increase font">A+</button>
+          <button id="pinBtn" type="button" title="Toggle always on top">PIN</button>
+          <button id="minBtn" type="button" title="Minimize">_</button>
+        </div>
+        <p id="fileName" class="fileName">No file loaded</p>
       </section>
 
-      <section class="promptArea" id="promptArea">
-        <p id="scriptText">Load a .txt or .docx speech file to begin.</p>
+      <div class="progressTrack">
+        <div id="progressFill" class="progressFill"></div>
+      </div>
+
+      <section class="reader" id="reader" tabindex="0" aria-label="Teleprompter reader">
+        <p id="linePrev" class="line muted"></p>
+        <p id="lineActive" class="line active">Load a .txt or .docx file to begin.</p>
+        <p id="lineNext1" class="line muted"></p>
+        <p id="lineNext2" class="line faint"></p>
+        <p id="lineNext3" class="line ghost"></p>
       </section>
-      <p id="status" class="status">Ready</p>
+
+      <footer class="statusBar">
+        <p id="status" class="status"><span class="indicator"></span> PAUSED</p>
+        <p id="counter" class="counter">LINE 0 / 0</p>
+        <p class="hint">PRESS <kbd>↩</kbd> TO ADVANCE</p>
+      </footer>
     </main>
 
     <script src="renderer.js"></script>

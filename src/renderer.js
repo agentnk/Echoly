@@ -1,125 +1,156 @@
 const openFileBtn = document.getElementById('openFileBtn');
 const playPauseBtn = document.getElementById('playPauseBtn');
+const fontDownBtn = document.getElementById('fontDownBtn');
+const fontUpBtn = document.getElementById('fontUpBtn');
+const fontSizeLabel = document.getElementById('fontSizeLabel');
 const pinBtn = document.getElementById('pinBtn');
 const minBtn = document.getElementById('minBtn');
-const speedInput = document.getElementById('speedInput');
-const fontInput = document.getElementById('fontInput');
-const scriptText = document.getElementById('scriptText');
-const promptArea = document.getElementById('promptArea');
-const statusText = document.getElementById('status');
+const fileName = document.getElementById('fileName');
+const progressFill = document.getElementById('progressFill');
+const status = document.getElementById('status');
+const counter = document.getElementById('counter');
+const reader = document.getElementById('reader');
+const linePrev = document.getElementById('linePrev');
+const lineActive = document.getElementById('lineActive');
+const lineNext1 = document.getElementById('lineNext1');
+const lineNext2 = document.getElementById('lineNext2');
+const lineNext3 = document.getElementById('lineNext3');
 
 let isPlaying = false;
 let isPinned = true;
-let animationFrameId = null;
-let offsetY = 0;
-let lastFrame = null;
+let fontSize = 26;
+let lines = [];
+let activeIndex = 0;
 
-function updateStatus(message) {
-  statusText.textContent = message;
+function parseLines(text) {
+  return text
+    .split('\n')
+    .map((line) => line.trim())
+    .filter(Boolean);
 }
 
-function resetPromptPosition() {
-  offsetY = 0;
-  scriptText.style.transform = 'translateY(0px)';
-  lastFrame = null;
+function updateFontSize() {
+  const lineFontSize = Math.round(fontSize * 2.8);
+  document.documentElement.style.setProperty('--line-font-size', `${lineFontSize}px`);
+  document.querySelectorAll('.line').forEach((line) => {
+    line.style.fontSize = `${lineFontSize}px`;
+  });
+  fontSizeLabel.textContent = `${fontSize}pt`;
 }
 
-function stopScrolling() {
-  if (animationFrameId) {
-    cancelAnimationFrame(animationFrameId);
-    animationFrameId = null;
-  }
-  isPlaying = false;
-  playPauseBtn.textContent = 'Play';
+function updateStatus() {
+  status.classList.toggle('playing', isPlaying);
+  status.innerHTML = `<span class="indicator"></span> ${isPlaying ? 'PLAYING' : 'PAUSED'}`;
 }
 
-function tick(timestamp) {
-  if (!lastFrame) {
-    lastFrame = timestamp;
-  }
-
-  const deltaSeconds = (timestamp - lastFrame) / 1000;
-  lastFrame = timestamp;
-
-  const pixelsPerSecond = Number(speedInput.value);
-  offsetY -= pixelsPerSecond * deltaSeconds;
-
-  const contentHeight = scriptText.scrollHeight;
-  const visibleHeight = promptArea.clientHeight;
-
-  if (Math.abs(offsetY) > contentHeight - visibleHeight + 28) {
-    stopScrolling();
-    updateStatus('Reached end of script. Press Play to restart.');
+function updateProgress() {
+  if (lines.length === 0) {
+    progressFill.style.width = '0%';
+    counter.textContent = 'LINE 0 / 0';
     return;
   }
 
-  scriptText.style.transform = `translateY(${offsetY}px)`;
-  animationFrameId = requestAnimationFrame(tick);
+  const progress = ((activeIndex + 1) / lines.length) * 100;
+  progressFill.style.width = `${Math.min(100, progress)}%`;
+  counter.textContent = `LINE ${activeIndex + 1} / ${lines.length}`;
 }
 
-function startScrolling() {
-  const text = scriptText.textContent?.trim();
-  if (!text || text === 'Load a .txt or .docx speech file to begin.') {
-    updateStatus('Open a script first.');
+function renderLines() {
+  if (lines.length === 0) {
+    linePrev.textContent = '';
+    lineActive.textContent = 'Load a .txt or .docx file to begin.';
+    lineNext1.textContent = '';
+    lineNext2.textContent = '';
+    lineNext3.textContent = '';
+    updateProgress();
     return;
   }
 
-  if (Math.abs(offsetY) > scriptText.scrollHeight - promptArea.clientHeight) {
-    resetPromptPosition();
+  linePrev.textContent = lines[activeIndex - 1] || '';
+  lineActive.textContent = lines[activeIndex] || '';
+  lineNext1.textContent = lines[activeIndex + 1] || '';
+  lineNext2.textContent = lines[activeIndex + 2] || '';
+  lineNext3.textContent = lines[activeIndex + 3] || '';
+
+  updateProgress();
+}
+
+function advanceLine() {
+  if (!isPlaying || lines.length === 0) {
+    return;
   }
 
-  isPlaying = true;
-  playPauseBtn.textContent = 'Pause';
-  updateStatus(`Scrolling at ${speedInput.value} px/s`);
-  animationFrameId = requestAnimationFrame(tick);
+  if (activeIndex < lines.length - 1) {
+    activeIndex += 1;
+    renderLines();
+  }
+}
+
+function togglePlayPause() {
+  isPlaying = !isPlaying;
+  playPauseBtn.textContent = isPlaying ? '❚❚' : '▶';
+  updateStatus();
 }
 
 openFileBtn.addEventListener('click', async () => {
   const result = await window.echoly.openFile();
 
   if (!result || result.canceled) {
-    updateStatus('File selection canceled.');
     return;
   }
 
   if (result.error) {
-    updateStatus(result.error);
+    status.innerHTML = `<span class="indicator"></span> ERROR: ${result.error.toUpperCase()}`;
     return;
   }
 
-  stopScrolling();
-  scriptText.textContent = result.text || 'The file was empty.';
-  resetPromptPosition();
-  updateStatus(`Loaded ${result.filePath}`);
+  const parsedLines = parseLines(result.text || '');
+  lines = parsedLines.length > 0 ? parsedLines : ['The selected file is empty.'];
+  activeIndex = 0;
+
+  const nameParts = (result.filePath || '').split(/[/\\]/);
+  fileName.textContent = nameParts[nameParts.length - 1] || 'Untitled';
+
+  renderLines();
+  reader.focus();
 });
 
 playPauseBtn.addEventListener('click', () => {
-  if (isPlaying) {
-    stopScrolling();
-    updateStatus('Paused');
-  } else {
-    startScrolling();
-  }
+  togglePlayPause();
 });
 
-speedInput.addEventListener('input', () => {
-  if (isPlaying) {
-    updateStatus(`Scrolling at ${speedInput.value} px/s`);
-  }
+fontDownBtn.addEventListener('click', () => {
+  fontSize = Math.max(18, fontSize - 2);
+  updateFontSize();
 });
 
-fontInput.addEventListener('input', () => {
-  scriptText.style.fontSize = `${fontInput.value}px`;
+fontUpBtn.addEventListener('click', () => {
+  fontSize = Math.min(44, fontSize + 2);
+  updateFontSize();
 });
 
 pinBtn.addEventListener('click', () => {
   isPinned = !isPinned;
-  pinBtn.textContent = isPinned ? 'Pinned' : 'Unpinned';
-  pinBtn.setAttribute('aria-pressed', String(isPinned));
+  pinBtn.textContent = isPinned ? 'PIN' : 'UNPIN';
   window.echoly.togglePin(isPinned);
-  updateStatus(isPinned ? 'Window pinned on top.' : 'Window unpinned.');
 });
 
 minBtn.addEventListener('click', () => {
   window.echoly.minimizeWindow();
 });
+
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Enter') {
+    event.preventDefault();
+    advanceLine();
+  }
+
+  if (event.key === ' ') {
+    event.preventDefault();
+    togglePlayPause();
+  }
+});
+
+updateFontSize();
+updateStatus();
+renderLines();
