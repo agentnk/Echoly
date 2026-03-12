@@ -46,7 +46,7 @@ class TeleprompterController {
   }
 
   void advanceLine() {
-    if (totalLines == 0) {
+    if (!_isPlaying || totalLines == 0) {
       return;
     }
 
