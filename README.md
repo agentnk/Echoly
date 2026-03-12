@@ -1,25 +1,27 @@
-# Echoly
+# Echoly (Flutter)
 
-This repository now contains a **Flutter desktop version** of Echoly on branch `flutter-version`.
+Echoly is now maintained as a **Flutter desktop teleprompter** app.
 
-## Flutter app location
+This repository keeps only the Flutter implementation.
 
-- `flutter_app/`
+## Project structure
 
-## What is implemented
+- `flutter_app/` — Flutter desktop app source
 
-- Minimalist teleprompter UI inspired by your mockup
-- Manual pacing mode (press **Enter** to advance line)
+## Features
+
+- Minimalist teleprompter UI
+- Manual pacing (`Enter` to advance line)
 - Play/Pause toggle
 - Font size controls
 - Progress bar + line counter
-- File open support for `.txt` and `.docx`
-- Always-on-top toggle and minimize window support for desktop
+- Open `.txt` and `.docx` files
+- Always-on-top toggle and minimize window support
 
-## Run (Flutter)
+## Run
 
 1. Install Flutter SDK: https://docs.flutter.dev/get-started/install
-2. From repo root:
+2. Run:
 
 ```bash
 cd flutter_app
@@ -31,6 +33,4 @@ flutter run -d macos
 
 ## Notes
 
-- The existing Electron implementation is still present in `src/`.
-- This branch focuses on migrating to Flutter for Windows/macOS desktop UI.
-- Screen-capture protection in Flutter may require platform-channel native code depending on OS.
+- Screen-capture protection for Flutter desktop may require platform-specific native code.
