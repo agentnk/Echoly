@@ -33,14 +33,14 @@ void main() {
       expect(controller.progress, closeTo(2 / 3, 0.0001));
     });
 
-    test('does not advance when paused', () {
+    test('advances manually even when paused', () {
       final controller = TeleprompterController();
       controller.setDocument(
         ScriptDocument(fileName: 'demo.txt', lines: ['one', 'two']),
       );
 
       controller.advanceLine();
-      expect(controller.currentLineNumber, 1);
+      expect(controller.currentLineNumber, 2);
     });
 
     test('clamps font size limits', () {
