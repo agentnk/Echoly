@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Echoly</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="appShell">
+      <header class="topBar">
+        <div class="windowDots" aria-hidden="true">
+          <span class="dot close"></span>
+          <span class="dot minimize"></span>
+          <span class="dot maximize"></span>
+        </div>
+        <h1>ECHOLY</h1>
+        <div class="placeholder"></div>
+      </header>
+
+      <section class="controlBar">
+        <div class="leftControls">
+          <button id="openFileBtn" type="button" title="Open script">⌂</button>
+          <button id="playPauseBtn" type="button" title="Toggle play">❚❚</button>
+          <button id="fontDownBtn" type="button" title="Decrease font">A-</button>
+          <span id="fontSizeLabel" class="fontSize">26pt</span>
+          <button id="fontUpBtn" type="button" title="Increase font">A+</button>
+          <button id="pinBtn" type="button" title="Toggle always on top">PIN</button>
+          <button id="minBtn" type="button" title="Minimize">_</button>
+        </div>
+        <p id="fileName" class="fileName">No file loaded</p>
+      </section>
+
+      <div class="progressTrack">
+        <div id="progressFill" class="progressFill"></div>
+      </div>
+
+      <section class="reader" id="reader" tabindex="0" aria-label="Teleprompter reader">
+        <p id="linePrev" class="line muted"></p>
+        <p id="lineActive" class="line active">Load a .txt or .docx file to begin.</p>
+        <p id="lineNext1" class="line muted"></p>
+        <p id="lineNext2" class="line faint"></p>
+        <p id="lineNext3" class="line ghost"></p>
+      </section>
+
+      <footer class="statusBar">
+        <p id="status" class="status"><span class="indicator"></span> PAUSED</p>
+        <p id="counter" class="counter">LINE 0 / 0</p>
+        <p class="hint">PRESS <kbd>↩</kbd> TO ADVANCE</p>
+      </footer>
+    </main>
+
+    <script src="renderer.js"></script>
+  </body>
+</html>
