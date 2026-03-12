@@ -180,8 +180,7 @@ h1 {
   font-size: 34px;
 }
 
-.status::before {
-  content: '';
+.indicator {
   width: 12px;
   height: 12px;
   border-radius: 999px;
@@ -191,7 +190,7 @@ h1 {
   vertical-align: middle;
 }
 
-.status.playing::before {
+.status.playing .indicator {
   background: #8bcc95;
 }
 

@@ -1,43 +1,36 @@
 # Echoly
 
-Echoly is a minimalist desktop teleprompter for presentations and speeches.
+This repository now contains a **Flutter desktop version** of Echoly on branch `flutter-version`.
 
-Built with Electron and designed to run on **Windows** and **macOS** (also works on Linux).
+## Flutter app location
 
-## Features
+- `flutter_app/`
 
-- Minimal reading-first teleprompter UI inspired by the provided clean mockup.
-- Manual pacing mode: press **Enter** to advance one line at a time.
-- Play/pause state, progress bar, and line counter.
-- Open `.txt` and `.docx` script files.
-- Adjustable font size.
-- Always-on-top toggle.
-- Content protection enabled (`setContentProtection(true)`) to keep the window hidden from many screen-capture/sharing workflows where the OS supports it.
+## What is implemented
 
-## Quick start
+- Minimalist teleprompter UI inspired by your mockup
+- Manual pacing mode (press **Enter** to advance line)
+- Play/Pause toggle
+- Font size controls
+- Progress bar + line counter
+- File open support for `.txt` and `.docx`
+- Always-on-top toggle and minimize window support for desktop
 
-```bash
-npm install
-npm start
-```
+## Run (Flutter)
 
-## Controls
-
-- **Open**: choose a `.txt` or `.docx` file.
-- **Play/Pause**: toggle reading mode.
-- **Enter**: advance to next line (while playing).
-- **A- / A+**: decrease/increase font size.
-- **Pin**: toggle always-on-top.
-- **_**: minimize.
-
-## Platform notes
-
-- **Windows**: supported.
-- **macOS**: supported, including hidden-inset title bar style.
-- **Screen-sharing invisibility** depends on OS/window manager and the capture API used by Zoom/Teams/Meet/OBS.
-
-## Development checks
+1. Install Flutter SDK: https://docs.flutter.dev/get-started/install
+2. From repo root:
 
 ```bash
-npm run check
+cd flutter_app
+flutter pub get
+flutter run -d windows
+# or
+flutter run -d macos
 ```
+
+## Notes
+
+- The existing Electron implementation is still present in `src/`.
+- This branch focuses on migrating to Flutter for Windows/macOS desktop UI.
+- Screen-capture protection in Flutter may require platform-channel native code depending on OS.
